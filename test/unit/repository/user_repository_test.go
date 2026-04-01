@@ -50,9 +50,9 @@ func TestUserRepository_Create(t *testing.T) {
 	}
 
 	mock.ExpectBegin()
-	mock.ExpectExec(regexp.QuoteMeta(`INSERT INTO "users"`)).
+	mock.ExpectQuery(regexp.QuoteMeta(`INSERT INTO "users"`)).
 		WithArgs(sqlmock.AnyArg(), sqlmock.AnyArg(), sqlmock.AnyArg(), sqlmock.AnyArg(), sqlmock.AnyArg(), sqlmock.AnyArg(), sqlmock.AnyArg()).
-		WillReturnResult(sqlmock.NewResult(1, 1))
+		WillReturnRows(sqlmock.NewRows([]string{"id"}).AddRow(userID))
 	mock.ExpectCommit()
 
 	err := repo.Create(context.Background(), user)

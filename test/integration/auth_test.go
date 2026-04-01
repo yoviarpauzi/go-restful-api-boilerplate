@@ -48,6 +48,7 @@ func (s *AuthSuite) SetupSuite() {
 	s.gormDB = database.NewDatabase(v, log)
 
 	// Migrate User entity
+	_ = s.gormDB.Migrator().DropTable(&entity.User{})
 	_ = s.gormDB.AutoMigrate(&entity.User{})
 
 	// Initialize Fiber App

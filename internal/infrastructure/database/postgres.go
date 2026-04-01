@@ -29,6 +29,9 @@ func NewDatabase(config *viper.Viper, log *zap.Logger) *gorm.DB {
 		log.Fatal("failed to connect to database", zap.Error(err))
 	}
 
+	// Create UUID extension if not exists
+	db.Exec("CREATE EXTENSION IF NOT EXISTS \"uuid-ossp\"")
+
 	sqlDB, _ := db.DB()
 	sqlDB.SetMaxIdleConns(config.GetInt("DB_MAX_IDLE_CONNS"))
 	sqlDB.SetMaxOpenConns(config.GetInt("DB_MAX_OPEN_CONNS"))
