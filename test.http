@@ -1,0 +1,77 @@
+### Variables
+@baseUrl = http://localhost:8080/api/v1
+@authToken = {{login.response.body.data.access_token}}
+
+### 1. Health Check
+GET {{baseUrl}}/health
+Accept: application/json
+
+### 2. Auth - Register
+# @name register
+POST {{baseUrl}}/auth/register
+Content-Type: application/json
+
+{
+    "name": "Test User",
+    "email": "test@example.com",
+    "password": "password123"
+}
+
+### 3. Auth - Login
+# @name login
+POST {{baseUrl}}/auth/login
+Content-Type: application/json
+
+{
+    "email": "test@example.com",
+    "password": "password123"
+}
+
+### 4. Auth - Change Password
+# @name change_password
+POST {{baseUrl}}/auth/change-password
+Content-Type: application/json
+Authorization: Bearer {{authToken}}
+
+{
+    "old_password": "password123",
+    "new_password": "newpassword456"
+}
+
+### 5. Auth - Reset Password (Non-Auth)
+POST {{baseUrl}}/auth/reset-password
+Content-Type: application/json
+
+{
+    "email": "test@example.com",
+    "new_password": "password123"
+}
+
+### 6. User - Get User Info by ID
+# @name get_user
+GET {{baseUrl}}/users/{{login.response.body.data.user_id}}
+Authorization: Bearer {{authToken}}
+Accept: application/json
+
+### 7. User - Update User Info by ID
+# @name update_user
+PUT {{baseUrl}}/users/{{login.response.body.data.user_id}}
+Authorization: Bearer {{authToken}}
+Content-Type: application/json
+
+{
+    "name": "Updated User",
+    "email": "updated@example.com"
+}
+
+### 8. User - Get All Users
+# @name get_all_users
+GET {{baseUrl}}/users
+Authorization: Bearer {{authToken}}
+Accept: application/json
+
+### 9. User - Delete User by ID
+# @name delete_user
+DELETE {{baseUrl}}/users/{{login.response.body.data.user_id}}
+Authorization: Bearer {{authToken}}
+Accept: application/json
